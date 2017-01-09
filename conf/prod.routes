@@ -1,5 +1,7 @@
+GET        /admin/metrics             com.kenshoo.play.metrics.MetricsController.metrics
+
 # Add all the application routes to the app.routes file
 ->         /investment-tax-relief-attachments              app.Routes
 ->         /                          health.Routes
 
-GET        /admin/metrics             @com.kenshoo.play.metrics.MetricsController.metrics
+GET        /admin/metrics             com.kenshoo.play.metrics.MetricsController.metrics
