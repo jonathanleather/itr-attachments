@@ -1,3 +1,9 @@
 # microservice specific routes
 
-GET        /hello-world             uk.gov.hmrc.investmenttaxreliefattachments.controllers.MicroserviceHelloWorld.hello
+POST       /file-upload/create-envelope                                                                                                                                                                                                                                            controllers.FileUploadController.createEnvelope
+
+GET        /file-upload/envelope/:envelopeID/get-envelope-status                                                                                                                                                                                                                   controllers.FileUploadController.getEnvelopeStatus(envelopeID: String)
+
+POST       /file-upload/envelope/:envelopeID/close-envelope                                                                                                                                                                                                                        controllers.FileUploadController.closeEnvelope(envelopeID: String)
+
+DELETE     /file-upload/envelope/:envelopeID/file/:fileID/delete-file                                                                                                                                                                                                              controllers.FileUploadController.deleteFile(envelopeID: String, fileID: String)
