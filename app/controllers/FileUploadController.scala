@@ -52,8 +52,7 @@ trait FileUploadController extends BaseController with Authorisation {
   }
 
   def getEnvelopeStatus(envelopeID: String): Action[AnyContent] = Action.async { implicit request =>
-    authorised {
-      case Authorised => fileUploadService.getEnvelopeStatus(envelopeID).map {
+      fileUploadService.getEnvelopeStatus(envelopeID).map {
         result => result.status match {
           case OK => Ok(result.json)
           case _ => InternalServerError
@@ -61,13 +60,10 @@ trait FileUploadController extends BaseController with Authorisation {
       }.recover {
         case e: Exception => InternalServerError
       }
-      case NotAuthorised => Future.successful(Forbidden)
-    }
   }
 
   def closeEnvelope(envelopeID: String): Action[AnyContent] = Action.async { implicit request =>
-    authorised {
-      case Authorised => fileUploadService.closeEnvelope(envelopeID).map {
+    fileUploadService.closeEnvelope(envelopeID).map {
         result => result.status match {
           case CREATED => Ok
           case _ => InternalServerError
@@ -75,8 +71,6 @@ trait FileUploadController extends BaseController with Authorisation {
       }.recover {
         case e: Exception => InternalServerError
       }
-      case NotAuthorised => Future.successful(Forbidden)
-    }
   }
 
   def deleteFile(envelopeID: String, fileID: String): Action[AnyContent] = Action.async { implicit request =>
