@@ -59,13 +59,22 @@ trait FileUploadService {
   def closeEnvelope(envelopeID: String)(implicit hc: HeaderCarrier, ex: ExecutionContext): Future[HttpResponse] = {
     fileUploadConnector.closeEnvelope(envelopeID).map {
       result => result.status match {
-        case CREATED =>
+        case CREATED => {
+          println("========================In upload service created ")
+        }
           result
-        case _ => Logger.warn(s"[FileUploadService][closeEnvelope] Error ${result.status} received.")
+        case _ => {
+          println("========================In upload service Not status created ")
+          Logger.warn(s"[FileUploadService][closeEnvelope] Error ${result.status} received.")
+        }
           result
       }
     }.recover {
-      case e: Exception => Logger.warn(s"[FileUploadService][closeEnvelope] Error ${e.getMessage} received.")
+
+      case e: Exception => {
+        println("========================In excpetop ")
+        Logger.warn(s"[FileUploadService][closeEnvelope] Error ${e.getMessage} received.")
+      }
         HttpResponse(INTERNAL_SERVER_ERROR)
     }
   }
