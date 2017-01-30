@@ -166,14 +166,6 @@ class FileUploadControllerSpec extends UnitSpec with WithFakeApplication with Be
       }
 
     }
-
-    "calling the method with a TAVC account with status NotYetActivated and confidence level 50" should {
-      "return status FORBIDDEN" in {
-        setup("NotYetActivated")
-        val result = TestController.getEnvelopeStatus(envelopeID)(FakeRequest())
-        status(result) shouldBe FORBIDDEN
-      }
-    }
   }
 
   "closeEnvelope" when {
@@ -217,14 +209,6 @@ class FileUploadControllerSpec extends UnitSpec with WithFakeApplication with Be
         status(result) shouldBe INTERNAL_SERVER_ERROR
       }
 
-    }
-
-    "calling the method with a TAVC account with status NotYetActivated and confidence level 50" should {
-      "return status FORBIDDEN" in {
-        setup("NotYetActivated")
-        val result = TestController.closeEnvelope(envelopeID)(FakeRequest())
-        status(result) shouldBe FORBIDDEN
-      }
     }
   }
 
@@ -272,7 +256,7 @@ class FileUploadControllerSpec extends UnitSpec with WithFakeApplication with Be
     "calling the method with a TAVC account with status NotYetActivated and confidence level 50" should {
       "return status FORBIDDEN" in {
         setup("NotYetActivated")
-        val result = TestController.closeEnvelope(envelopeID)(FakeRequest())
+        val result = TestController.deleteFile(envelopeID, fileID)(FakeRequest())
         status(result) shouldBe FORBIDDEN
       }
     }
