@@ -57,8 +57,6 @@ trait FileUploadConnector {
   }
 
   def closeEnvelope(envelopeId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = {
-    println("========================In close envelop connector. env id is")
-    println(envelopeId)
     http.POST(s"$serviceURL/file-routing/requests", closeEnvelopeJSON(envelopeId))
   }
 

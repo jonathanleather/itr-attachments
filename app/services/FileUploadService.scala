@@ -60,11 +60,9 @@ trait FileUploadService {
     fileUploadConnector.closeEnvelope(envelopeID).map {
       result => result.status match {
         case CREATED => {
-          println("========================In upload service created ")
         }
           result
         case _ => {
-          println("========================In upload service Not status created ")
           Logger.warn(s"[FileUploadService][closeEnvelope] Error ${result.status} received.")
         }
           result
@@ -72,7 +70,6 @@ trait FileUploadService {
     }.recover {
 
       case e: Exception => {
-        println("========================In excpetop ")
         Logger.warn(s"[FileUploadService][closeEnvelope] Error ${e.getMessage} received.")
       }
         HttpResponse(INTERNAL_SERVER_ERROR)
