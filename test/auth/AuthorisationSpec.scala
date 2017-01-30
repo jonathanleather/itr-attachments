@@ -31,7 +31,7 @@ import uk.gov.hmrc.play.auth.microservice.connectors.ConfidenceLevel
 
 import scala.concurrent.Future
 
-class AuthorisationSpec extends FakeApplication with UnitSpec with MockitoSugar with BeforeAndAfter {
+class AuthorisationSpec extends UnitSpec with MockitoSugar with BeforeAndAfter {
 
   private def authorised() = TestAuthorisation.authorised {
     case Authorised => Future.successful(Results.Ok)

@@ -18,10 +18,10 @@ package metrics
 
 import com.codahale.metrics.Timer
 import com.codahale.metrics.Timer.Context
-import com.kenshoo.play.metrics.MetricsRegistry
+import uk.gov.hmrc.play.graphite.MicroserviceMetrics
 import metrics.MetricsEnum.MetricsEnum
 
-trait Metrics {
+trait Metrics extends MicroserviceMetrics {
   def startTimer(api: MetricsEnum): Timer.Context
   def incrementSuccessCounter(api: MetricsEnum): Unit
   def incrementFailedCounter(api: MetricsEnum): Unit
@@ -30,15 +30,15 @@ trait Metrics {
 object Metrics extends Metrics {
 
   val timers = Map(
-    MetricsEnum.TAVC_SUBMISSION -> MetricsRegistry.defaultRegistry.timer("tavc-subscription-response-timer")
+    MetricsEnum.TAVC_SUBMISSION -> metrics.defaultRegistry.timer("tavc-subscription-response-timer")
   )
 
   val successCounters = Map(
-    MetricsEnum.TAVC_SUBMISSION -> MetricsRegistry.defaultRegistry.counter("tavc-subscription-success-counter")
+    MetricsEnum.TAVC_SUBMISSION -> metrics.defaultRegistry.counter("tavc-subscription-success-counter")
   )
 
   val failedCounters = Map(
-    MetricsEnum.TAVC_SUBMISSION -> MetricsRegistry.defaultRegistry.counter("tavc-subscription-failed-counter")
+    MetricsEnum.TAVC_SUBMISSION -> metrics.defaultRegistry.counter("tavc-subscription-failed-counter")
   )
 
   override def startTimer(api: MetricsEnum): Context = timers(api).time()
