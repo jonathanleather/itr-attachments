@@ -37,8 +37,9 @@ trait FileUploadConnector {
                                         |    "contentTypes" : [
                                         |        "application/pdf"
                                         |    ],
-                                        |    "maxItems" : 5,
-                                        |    "maxSizePerItem" : "5MB"
+                                        |    "maxItems" : 500,
+                                        |    "maxSize" : "25MB",
+                                        |    "maxSizePerItem" : "10MB"
                                         |  }
                                         |}""".stripMargin)
 
