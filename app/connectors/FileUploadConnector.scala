@@ -38,8 +38,8 @@ trait FileUploadConnector {
                                         |        "application/pdf"
                                         |    ],
                                         |    "maxItems" : 500,
-                                        |    "maxSize" : "25MB",
-                                        |    "maxSizePerItem" : "10MB"
+                                        |    "maxSize" : "26MB",
+                                        |    "maxSizePerItem" : "12MB"
                                         |  }
                                         |}""".stripMargin)
 
