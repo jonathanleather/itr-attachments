@@ -34,8 +34,6 @@ trait FileUploadConnector {
 
   val createEnvelopeJSON = Json.parse("""{
                                         |  "constraints" : {
-                                        |    "maxItems" : 100,
-                                        |    "maxSize" : "25MB",
                                         |    "maxSizePerItem" : "12MB"
                                         |  }
                                         |}""".stripMargin)
