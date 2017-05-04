@@ -41,7 +41,7 @@ trait FileUploadConnector {
   val closeEnvelopeJSON = (envelopeId: String) => Json.parse(s"""{
                                          |   "envelopeId" : "$envelopeId",
                                          |   "application" : "tavc",
-                                         |   "destination" : "DMS"
+                                         |   "destination" : "TAVC"
                                          |}""".stripMargin)
 
   def createEnvelope()(implicit hc: HeaderCarrier): Future[HttpResponse] = {
