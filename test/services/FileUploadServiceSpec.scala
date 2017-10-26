@@ -23,11 +23,11 @@ import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfter
 import play.api.libs.json.Json
 import play.api.test.Helpers._
-import uk.gov.hmrc.play.http.{HeaderCarrier, HttpResponse, Upstream5xxResponse}
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import uk.gov.hmrc.http.{ HeaderCarrier, HttpResponse, Upstream5xxResponse }
 
 class FileUploadServiceSpec extends UnitSpec with MockitoSugar with WithFakeApplication with BeforeAndAfter {
 

@@ -19,8 +19,9 @@ package connectors
 import config.{MicroserviceAppConfig, WSHttp}
 import play.api.libs.json.Json
 import uk.gov.hmrc.play.http._
-
+import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
 import scala.concurrent.Future
+import uk.gov.hmrc.http.{ HeaderCarrier, HttpDelete, HttpGet, HttpPost, HttpPut, HttpResponse }
 
 object FileUploadConnector extends FileUploadConnector {
   override lazy val http = WSHttp
@@ -29,7 +30,7 @@ object FileUploadConnector extends FileUploadConnector {
 
 trait FileUploadConnector {
 
-  val http: HttpGet with HttpPost with HttpPut with HttpDelete
+  def http: HttpGet with HttpPost with HttpPut with HttpDelete
   val serviceURL: String
 
   val createEnvelopeJSON = Json.parse("""{

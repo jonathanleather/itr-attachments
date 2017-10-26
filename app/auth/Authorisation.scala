@@ -19,10 +19,10 @@ package auth
 import play.api.mvc.Result
 import connectors.AuthConnector
 import uk.gov.hmrc.play.auth.microservice.connectors.ConfidenceLevel
-import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import uk.gov.hmrc.http.HeaderCarrier
 
 trait Authorisation {
 

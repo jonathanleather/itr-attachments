@@ -20,9 +20,9 @@ import akka.dispatch.Envelope
 import connectors.FileUploadConnector
 import play.api.Logger
 import play.mvc.Http.Status._
-import uk.gov.hmrc.play.http.{HeaderCarrier, HttpResponse, NotFoundException}
 
 import scala.concurrent.{ExecutionContext, Future}
+import uk.gov.hmrc.http.{ HeaderCarrier, HttpResponse, NotFoundException }
 
 object FileUploadService extends FileUploadService {
   override lazy val fileUploadConnector = FileUploadConnector

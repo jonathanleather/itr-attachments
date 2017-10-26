@@ -22,9 +22,9 @@ import org.mockito.Matchers
 import org.mockito.Mockito._
 import uk.gov.hmrc.play.auth.microservice.connectors.ConfidenceLevel
 import org.scalatest.mock.MockitoSugar
-import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.Future
+import uk.gov.hmrc.http.HeaderCarrier
 
 object AuthHelper extends MockitoSugar {
   implicit val hc = HeaderCarrier()
