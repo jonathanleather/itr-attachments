@@ -29,8 +29,10 @@ import uk.gov.hmrc.http._
 
 class FileUploadConnectorSpec extends UnitSpec with MockitoSugar with WithFakeApplication {
 
+  trait MockHttp extends HttpPost with HttpDelete with HttpPut with HttpGet
+
   object TestConnector extends FileUploadConnector {
-    override def http = mock[HttpPost with HttpDelete with HttpPut with HttpGet]
+    override val http = mock[MockHttp]
     override lazy val serviceURL = "file-upload"
   }
 

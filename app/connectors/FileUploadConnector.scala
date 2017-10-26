@@ -30,7 +30,7 @@ object FileUploadConnector extends FileUploadConnector {
 
 trait FileUploadConnector {
 
-  def http: HttpGet with HttpPost with HttpPut with HttpDelete
+  val http: HttpGet with HttpPost with HttpPut with HttpDelete
   val serviceURL: String
 
   val createEnvelopeJSON = Json.parse("""{
