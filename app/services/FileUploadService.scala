@@ -16,9 +16,8 @@
 
 package services
 
-import akka.dispatch.Envelope
 import connectors.FileUploadConnector
-import play.api.Logger
+import play.Logger
 import play.mvc.Http.Status._
 import uk.gov.hmrc.play.http.{HeaderCarrier, HttpResponse, NotFoundException}
 
@@ -94,4 +93,29 @@ trait FileUploadService {
         HttpResponse(INTERNAL_SERVER_ERROR)
     }
   }
+
+  def getFileData(envelopeID: String, fileID: String)(implicit hc: HeaderCarrier, ex: ExecutionContext): Future[HttpResponse] = {
+    fileUploadConnector.getFileData(envelopeID, fileID).map {
+      result =>
+        result.status match {
+        case OK => printBytesString(result.body)
+          result
+        case _ => Logger.warn(s"[FileUploadService][getFileData] Error ${result.status} received.")
+          result
+      }
+    }.recover {
+      case e:NotFoundException => {
+        Logger.warn(s"[FileUploadService][getFileData] Error ${e.getMessage} received for envelope Id $envelopeID"
+          + "Returning Ok 200 with no data.")
+        HttpResponse(OK)
+      }
+      case e: Exception => Logger.warn(s"[FileUploadService][getFileData] Error ${e.getMessage} received.")
+        HttpResponse(INTERNAL_SERVER_ERROR)
+    }
+  }
+
+  def printBytesString(data: String): Unit ={
+    Logger.warn(s" FILE DATA :: \n${data}")
+  }
+
 }

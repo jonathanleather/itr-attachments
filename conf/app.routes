@@ -7,3 +7,7 @@ GET        /file-upload/envelope/:envelopeID/get-envelope-status                
 POST       /file-upload/envelope/:envelopeID/close-envelope                                                                                                                                                                                                                        controllers.FileUploadController.closeEnvelope(envelopeID: String)
 
 DELETE     /file-upload/envelope/:envelopeID/file/:fileID/delete-file                                                                                                                                                                                                              controllers.FileUploadController.deleteFile(envelopeID: String, fileID: String)
+
+GET        /file-upload/envelope/:envelopeID/file/:fileID/get-file-data                                                                                                                                                                                                            controllers.FileUploadController.getFileData(envelopeID: String, fileID: String)
+
+POST       /file-upload-callback/envelopes                                                                                                                                                                                                                                          controllers.FileUploadController.callBackEnvelope

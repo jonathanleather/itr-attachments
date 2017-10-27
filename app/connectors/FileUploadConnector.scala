@@ -33,6 +33,7 @@ trait FileUploadConnector {
   val serviceURL: String
 
   val createEnvelopeJSON = Json.parse("""{
+                                        |  "callbackUrl": "http://localhost:9644/investment-tax-relief-attachments/file-upload-callback/envelopes",
                                         |  "constraints" : {
                                         |    "maxSizePerItem" : "10MB"
                                         |  }
@@ -60,4 +61,7 @@ trait FileUploadConnector {
     http.DELETE(s"$serviceURL/file-upload/envelopes/$envelopeId/files/$fileId")
   }
 
+  def getFileData(envelopeId: String, fileId: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = {
+    http.GET(s"$serviceURL/file-upload/envelopes/$envelopeId/files/$fileId/content")
+  }
 }

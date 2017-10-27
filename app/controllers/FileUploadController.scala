@@ -19,8 +19,8 @@ package controllers
 import auth.{Authorisation, Authorised, NotAuthorised}
 import connectors.AuthConnector
 import play.api.Logger
-import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent}
+import play.api.libs.json.{JsValue, Json}
+import play.api.mvc.{Action, AnyContent, BodyParsers}
 import services.FileUploadService
 import uk.gov.hmrc.play.microservice.controller.BaseController
 
@@ -85,6 +85,22 @@ trait FileUploadController extends BaseController with Authorisation {
       }
       case NotAuthorised => Future.successful(Forbidden)
     }
+  }
+
+  def getFileData(envelopeID: String, fileID: String): Action[AnyContent] = Action.async { implicit request =>
+    fileUploadService.getFileData(envelopeID, fileID).map {
+      result => result.status match {
+        case OK =>  Ok(result.body)
+        case _ => InternalServerError
+      }
+    }.recover {
+      case e: Exception => InternalServerError
+    }
+  }
+
+  def callBackEnvelope: Action[JsValue] = Action.async(BodyParsers.parse.json) { implicit request =>
+    Logger.info(" CALLBACK FROM FILE UPLOAD SERVICE \n" + Json.prettyPrint(request.body))
+    Future.successful(Ok)
   }
 
 }
