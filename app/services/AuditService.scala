@@ -20,7 +20,6 @@ import common.{AuditConstants, ResponseConstants}
 import config.MicroserviceAuditConnector
 import play.api.mvc.RequestHeader
 import uk.gov.hmrc.play.config.AppName
-import uk.gov.hmrc.play.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.audit.AuditExtensions.auditHeaderCarrier
 import uk.gov.hmrc.play.audit.model.ExtendedDataEvent
 import uk.gov.hmrc.play.audit.http.connector.{AuditConnector, AuditResult}
@@ -31,6 +30,7 @@ import play.api.libs.json.Json
 import scala.concurrent.ExecutionContext.Implicits.global
 
 import scala.util.{Failure, Success, Try}
+import uk.gov.hmrc.http.HttpResponse
 
 object AuditService extends AuditService with AppName {
   val metrics = Metrics

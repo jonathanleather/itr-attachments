@@ -21,15 +21,21 @@ import org.scalatest.mock.MockitoSugar
 import uk.gov.hmrc.play.http.ws.WSHttp
 import org.mockito.Mockito._
 import play.api.libs.json.{JsValue, Json}
-import uk.gov.hmrc.play.http.{HeaderCarrier, HttpResponse}
 import play.api.test.Helpers._
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
-
+import uk.gov.hmrc.http.{ HeaderCarrier, HttpGet, HttpPost, HttpResponse, HttpDelete }
 import scala.concurrent.Future
+import uk.gov.hmrc.http._
 
 class FileUploadConnectorSpec extends UnitSpec with MockitoSugar with WithFakeApplication {
 
-  val mockHttp = mock[WSHttp]
+  trait MockHttp extends HttpPost with HttpDelete with HttpPut with HttpGet
+
+  object TestConnector extends FileUploadConnector {
+    override val http = mock[MockHttp]
+    override lazy val serviceURL = "file-upload"
+  }
+
   val envelopeID = "00000000-0000-0000-0000-000000000000"
   val fileID = "1"
   implicit val hc = HeaderCarrier()
@@ -42,10 +48,7 @@ class FileUploadConnectorSpec extends UnitSpec with MockitoSugar with WithFakeAp
     |  "status": "OPEN"
     |}""".stripMargin)
 
-  object TestConnector extends FileUploadConnector {
-    override lazy val http = mockHttp
-    override lazy val serviceURL = "file-upload"
-  }
+
 
   "FileUploadConnector" should {
 
@@ -64,8 +67,8 @@ class FileUploadConnectorSpec extends UnitSpec with MockitoSugar with WithFakeAp
     lazy val result = TestConnector.createEnvelope()
 
     "Send the JSON defined in createEnvelopeJSON as the body" in {
-      when(mockHttp.POST[JsValue,HttpResponse](Matchers.eq(s"${TestConnector.serviceURL}/file-upload/envelopes"),
-        Matchers.eq(TestConnector.createEnvelopeJSON),Matchers.any())(Matchers.any(), Matchers.any(), Matchers.any()))
+      when(TestConnector.http.POST[JsValue,HttpResponse](Matchers.eq(s"${TestConnector.serviceURL}/file-upload/envelopes"),
+        Matchers.eq(TestConnector.createEnvelopeJSON),Matchers.any())(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any()))
         .thenReturn(Future.successful(HttpResponse(OK, responseHeaders = Map("Location" -> Seq(s"file-upload/file-upload/envelopes/$envelopeID")))))
       await(result).status shouldBe OK
     }
@@ -77,8 +80,8 @@ class FileUploadConnectorSpec extends UnitSpec with MockitoSugar with WithFakeAp
     lazy val result = TestConnector.getEnvelopeStatus(envelopeID)
 
     "Send the envelopeID in the URL" in {
-      when(mockHttp.GET[HttpResponse](Matchers.eq(s"${TestConnector.serviceURL}/file-upload/envelopes/$envelopeID"))
-        (Matchers.any(), Matchers.any())).thenReturn(Future.successful(HttpResponse(OK, responseJson = Some(envelopeStatusResponse))))
+      when(TestConnector.http.GET[HttpResponse](Matchers.eq(s"${TestConnector.serviceURL}/file-upload/envelopes/$envelopeID"))
+        (Matchers.any(), Matchers.any(), Matchers.any())).thenReturn(Future.successful(HttpResponse(OK, responseJson = Some(envelopeStatusResponse))))
       await(result).status shouldBe OK
       await(result).json shouldBe envelopeStatusResponse
     }
@@ -90,8 +93,8 @@ class FileUploadConnectorSpec extends UnitSpec with MockitoSugar with WithFakeAp
     lazy val result = TestConnector.closeEnvelope(envelopeID)
 
     "Send the JSON defined in closeEnvelopeJSON as the body" in {
-      when(mockHttp.POST[JsValue,HttpResponse](Matchers.eq(s"${TestConnector.serviceURL}/file-routing/requests"),
-        Matchers.eq(TestConnector.closeEnvelopeJSON(envelopeID)),Matchers.any())(Matchers.any(), Matchers.any(), Matchers.any()))
+      when(TestConnector.http.POST[JsValue,HttpResponse](Matchers.eq(s"${TestConnector.serviceURL}/file-routing/requests"),
+        Matchers.eq(TestConnector.closeEnvelopeJSON(envelopeID)),Matchers.any())(Matchers.any(), Matchers.any(), Matchers.any(), Matchers.any()))
         .thenReturn(Future.successful(HttpResponse(OK, responseHeaders = Map("Location" -> Seq(s"/file-routing/requests/$envelopeID")))))
       await(result).status shouldBe OK
     }
@@ -103,8 +106,8 @@ class FileUploadConnectorSpec extends UnitSpec with MockitoSugar with WithFakeAp
     lazy val result = TestConnector.deleteFile(envelopeID, fileID)
 
     "Send the envelopeID and fileID in the URL" in {
-      when(mockHttp.DELETE[HttpResponse](Matchers.eq(s"${TestConnector.serviceURL}/file-upload/envelopes/$envelopeID/files/$fileID"))
-        (Matchers.any(), Matchers.any())).thenReturn(Future.successful(HttpResponse(OK)))
+      when(TestConnector.http.DELETE[HttpResponse](Matchers.eq(s"${TestConnector.serviceURL}/file-upload/envelopes/$envelopeID/files/$fileID"))
+        (Matchers.any(), Matchers.any(), Matchers.any())).thenReturn(Future.successful(HttpResponse(OK)))
       await(result).status shouldBe OK
     }
 
