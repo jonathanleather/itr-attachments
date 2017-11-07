@@ -26,10 +26,10 @@ import org.mockito.Matchers
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.play.http.HttpResponse
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
 import scala.concurrent.Future
+import uk.gov.hmrc.http.HttpResponse
 
 class FileUploadControllerSpec extends UnitSpec with WithFakeApplication with BeforeAndAfter with MockitoSugar {
 

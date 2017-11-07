@@ -18,16 +18,16 @@ package services
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.{RunnableGraph, Source}
-import akka.util.ByteString
+import akka.stream.scaladsl.RunnableGraph
 import connectors.FileUploadConnector
 import play.Logger
 import play.mvc.Http.Status._
-import uk.gov.hmrc.play.http.{HeaderCarrier, HttpResponse, NotFoundException}
 import flow.investorDetailsCSVFlow
 import util.Util
 
+
 import scala.concurrent.{ExecutionContext, Future}
+import uk.gov.hmrc.http.{ HeaderCarrier, HttpResponse, NotFoundException }
 
 object FileUploadService extends FileUploadService {
   override lazy val fileUploadConnector = FileUploadConnector

@@ -22,7 +22,6 @@ import org.mockito.Matchers
 import org.scalatest.BeforeAndAfter
 import org.scalatest.mock.MockitoSugar
 import play.api.test.FakeApplication
-import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
 import play.api.test.Helpers._
 import org.mockito.Mockito._
@@ -30,6 +29,7 @@ import play.api.mvc.Results
 import uk.gov.hmrc.play.auth.microservice.connectors.ConfidenceLevel
 
 import scala.concurrent.Future
+import uk.gov.hmrc.http.HeaderCarrier
 
 class AuthorisationSpec extends UnitSpec with MockitoSugar with BeforeAndAfter {
 
