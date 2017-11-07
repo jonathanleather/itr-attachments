@@ -1,0 +1,2 @@
+{"row":7,"column":9,"error":"Invalid number of columns in row: there must be 8 columns followed by exactly 4 columns for each holding"}
+{"row":10,"column":8,"error":"Invalid date"}

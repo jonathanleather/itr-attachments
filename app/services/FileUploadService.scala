@@ -16,10 +16,16 @@
 
 package services
 
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import akka.stream.scaladsl.{RunnableGraph, Source}
+import akka.util.ByteString
 import connectors.FileUploadConnector
 import play.Logger
 import play.mvc.Http.Status._
 import uk.gov.hmrc.play.http.{HeaderCarrier, HttpResponse, NotFoundException}
+import flow.investorDetailsCSVFlow
+import util.Util
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -31,6 +37,9 @@ trait FileUploadService {
 
   final val EMPTY_STRING = ""
   val fileUploadConnector: FileUploadConnector
+
+  implicit val system = ActorSystem("InvestorDetailsFlow")
+  implicit val materializer = ActorMaterializer()
 
   def createEnvelope(implicit hc: HeaderCarrier, ex: ExecutionContext): Future[String] = {
     fileUploadConnector.createEnvelope().map {
@@ -98,7 +107,7 @@ trait FileUploadService {
     fileUploadConnector.getFileData(envelopeID, fileID).map {
       result =>
         result.status match {
-        case OK => printBytesString(result.body)
+        case OK => printBytesString(result.body, fileID)
           result
         case _ => Logger.warn(s"[FileUploadService][getFileData] Error ${result.status} received.")
           result
@@ -114,8 +123,14 @@ trait FileUploadService {
     }
   }
 
-  def printBytesString(data: String): Unit ={
-    Logger.warn(s" FILE DATA :: \n${data}")
+  def printBytesString(data: String, fileId: String)(implicit hc: HeaderCarrier, ex: ExecutionContext): Unit ={
+    Logger.info(s" FILE DATA INSERT TO DATABASE")
+    val flow = investorDetailsCSVFlow(Util.fileSource(data), Util.investorDetailsSink(fileId), Util.validationErrorsSink(fileId))
+    val run = RunnableGraph.fromGraph(flow).run
+    val combinedRunResult = Future.sequence(List(run._1, run._2))
+    combinedRunResult map { result =>
+      Logger.warn("Processing completed for file: " + fileId + "\n")
+    }
   }
 
 }
