@@ -21,5 +21,5 @@ import play.api.libs.json._
 case class ValidationError(row: Int, column: Int, error: String)
 
 object ValidationError {
-  implicit val writes = Json.writes[ValidationError]
+  implicit val format = Json.format[ValidationError]
 }

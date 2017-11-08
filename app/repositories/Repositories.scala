@@ -22,4 +22,5 @@ object Repositories {
   private implicit val mongo = new MongoDbConnection {}.db
 
   lazy val investorMongoRepository = new InvestorMongoRepository()
+  lazy val investorErrorMongoRepository = new InvestorErrorMongoRepository()
 }

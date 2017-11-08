@@ -16,20 +16,26 @@
 
 package services
 
-import models.InvestorDetails
-import repositories.{InvestorMongoRepository, Repositories}
+import models.{InvestorDetails, ValidationError}
+import repositories.{InvestorErrorMongoRepository, InvestorMongoRepository, Repositories}
 import uk.gov.hmrc.play.config.ServicesConfig
 
 import scala.concurrent.ExecutionContext
 
 object InvestorService extends InvestorService with ServicesConfig {
   lazy val investorMongoRepository = Repositories.investorMongoRepository
+  lazy val investorErrorMongoRepository = Repositories.investorErrorMongoRepository
 }
 
 trait InvestorService  {
   val investorMongoRepository : InvestorMongoRepository
+  val investorErrorMongoRepository: InvestorErrorMongoRepository
 
-  def saveInvestorDetails(investor: InvestorDetails)(implicit ec: ExecutionContext): Unit ={
+  def createInvestorDetails(investor: InvestorDetails)(implicit ec: ExecutionContext): Unit ={
     investorMongoRepository.createInvestor(investor)
+  }
+
+  def createError(error: ValidationError)(implicit ec: ExecutionContext): Unit ={
+    investorErrorMongoRepository.createError(error)
   }
 }

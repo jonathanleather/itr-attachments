@@ -100,12 +100,12 @@ object Util {
   def investorDetailsSink(fileId: String)(implicit ec: ExecutionContext): OutputSink = {
     Flow[InvestorDetails]
       .map { investor =>
-        InvestorService.saveInvestorDetails(investor)
+        InvestorService.createInvestorDetails(investor)
       }
       .toMat(Sink.ignore)(Keep.right)
   }
 
-  def validationErrorsSink(fileId: String): ErrorSink = {
+  /*def validationErrorsSink(fileId: String): ErrorSink = {
     val path = Paths.get(fileId + ".err")
     val sink = FileIO.toPath(path, outputFileOptions)
     Flow[List[ValidationError]]
@@ -118,20 +118,16 @@ object Util {
         ByteString(asJsonStreamLines)
       }
       .toMat(sink)(Keep.right)
-  }
+  }*/
 
-  /*def validationErrorsSink(fileId: String): ErrorSink = {
+  def validationErrorsSink(fileId: String)(implicit ec: ExecutionContext): ErrorSink = {
     Flow[List[ValidationError]]
       .map { errors =>
         // output list of errors as stream of Json objects on separate lines rather than in an array
-        val asJsonStreamLines = errors.foldLeft[String]("") { (acc, err) =>
-          val errAsJson = Json.toJson(err)
-          acc + errAsJson.toString + "\n"
-        }
-        ByteString(asJsonStreamLines)
+        errors.map{error => InvestorService.createError(error)}
       }
       .toMat(Sink.ignore)(Keep.right)
-  }*/
+  }
 
   def fileSource(data: String): CSV.File = {
     Source.single(ByteString(data))

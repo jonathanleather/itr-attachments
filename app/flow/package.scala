@@ -33,7 +33,7 @@ package object flow {
   type RowValidationOutcome=Either[RowErrors,Row] // type of output of validation stage
 
   type OutputSink = Sink[InvestorDetails,Future[Done]]
-  type ErrorSink  = Sink[List[ValidationError],Future[IOResult]]
+  type ErrorSink  = Sink[List[ValidationError],Future[Done]]
 
   object CSV {
     type File = Source[ByteString, NotUsed]
