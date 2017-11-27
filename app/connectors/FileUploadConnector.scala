@@ -26,14 +26,17 @@ import uk.gov.hmrc.http.{ HeaderCarrier, HttpDelete, HttpGet, HttpPost, HttpPut,
 object FileUploadConnector extends FileUploadConnector {
   override lazy val http = WSHttp
   override lazy val serviceURL = MicroserviceAppConfig.fileUploadURL
+  override lazy val submissionUrl = MicroserviceAppConfig.submissionUrl
 }
 
 trait FileUploadConnector {
 
   val http: HttpGet with HttpPost with HttpPut with HttpDelete
   val serviceURL: String
+  val submissionUrl: String
 
   val createEnvelopeJSON = Json.parse("""{
+                                        |  "callbackUrl": "http://localhost:9644/investment-tax-relief-attachments/file-upload-callback/envelopes",
                                         |  "constraints" : {
                                         |    "maxSizePerItem" : "10MB"
                                         |  }

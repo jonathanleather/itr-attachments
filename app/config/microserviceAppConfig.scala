@@ -24,6 +24,7 @@ trait AppConfig {
   val authURL: String
   val authorityURL: String
   val fileUploadURL: String
+  val submissionUrl: String
 }
 
 object MicroserviceAppConfig extends AppConfig with ServicesConfig {
@@ -34,4 +35,5 @@ object MicroserviceAppConfig extends AppConfig with ServicesConfig {
   override lazy val authURL = baseUrl("auth")
   override lazy val authorityURL = loadConfig("authority.url")
   override lazy val fileUploadURL: String = baseUrl("file-upload")
+  override lazy val submissionUrl: String = baseUrl("investment-tax-relief-submission")
 }
